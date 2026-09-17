@@ -4,6 +4,7 @@ using MySqlConnector;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
 using BlogApi.Models.DTOs;
+using System.Diagnostics;
 
 namespace BlogApi.Controllers
 {
@@ -65,15 +66,41 @@ namespace BlogApi.Controllers
             return new { message = "Sikeres találat", result = blogger };
         }
 
-        [HttpPost]
-        public object AddNewBlogger(AddNewBloggerDTos blog)
+        [HttpPost("register")]
+        public object AddNewBlogger(AddNewBloggerDTos addNewBloggerDTos)
         {
             using var connector = new MySqlConnection(ConnectionString);
             connector.Open();
-
-
+            string sql = @"INSERT INTO `blogger`(`Name`, `Email`, `Age`, `Password`, `RegistrationTime`) VALUES (@name, @email, @age, @password, @registrationTime)";
+            using var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@name", addNewBloggerDTos.Name);
+            cmd.Parameters.AddWithValue("@email", addNewBloggerDTos.Email);
+            cmd.Parameters.AddWithValue("@age", addNewBloggerDTos.Age);
+            cmd.Parameters.AddWithValue("@password", addNewBloggerDTos.Password);
+            cmd.Parameters.AddWithValue("@registrationTime", DateTime.Now);
+            cmd.ExecuteNonQuery();
             connector.Close();
-            return new { message = "Sikeres hozzáadás", result = blog };
+            return new { message = "Sikeres hozzáadás", result = addNewBloggerDTos };
+        }
+        [HttpPost("login")]
+        public object Login(LoginBloggerDTOs loginBloggerDTos)
+        {
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+            string sql = @"SELECT * FROM blogger WHERE Email=@Email AND Password=@Password";
+            using var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@Email", loginBloggerDTos.Email);
+            cmd.Parameters.AddWithValue("@Password", loginBloggerDTos.Password);
+            using var datareader = cmd.ExecuteReader();
+            if (datareader.Read() == true)
+            {
+                return new { message = "Sikeres belépés", result = datareader.GetInt32("Id") };
+            }
+            else
+            {
+                return new { message = "Sikertelen belépés", result = loginBloggerDTos};
+            }
+
         }
     }
 }

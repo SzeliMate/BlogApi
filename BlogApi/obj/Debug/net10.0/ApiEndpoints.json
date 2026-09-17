@@ -24,5 +24,37 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "Login",
+    "RelativePath": "bloggers/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginBloggerDTos",
+        "Type": "BlogApi.Models.DTOs.LoginBloggerDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "AddNewBlogger",
+    "RelativePath": "bloggers/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addNewBloggerDTos",
+        "Type": "BlogApi.Models.DTOs.AddNewBloggerDTos",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

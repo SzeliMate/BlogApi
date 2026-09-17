@@ -34,3 +34,4 @@ C:\Users\szelim\Desktop\Backend\BlogApi\FirstRestFul\BlogApi\obj\Debug\net10.0\B
 C:\Users\szelim\Desktop\Backend\BlogApi\FirstRestFul\BlogApi\obj\Debug\net10.0\ref\BlogApi.dll
 C:\Users\szelim\Desktop\Backend\BlogApi\FirstRestFul\BlogApi\bin\Debug\net10.0\Scalar.AspNetCore.dll
 C:\Users\szelim\Desktop\Backend\BlogApi\FirstRestFul\BlogApi\obj\Debug\net10.0\BlogApi.sourcelink.json
+C:\Users\szelim\Desktop\Backend\BlogApi\FirstRestFul\BlogApi\bin\Debug\net10.0\MySqlConnector.dll

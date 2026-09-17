@@ -2,11 +2,27 @@
   {
     "ContainingType": "BlogApi.Controllers.BlogController",
     "Method": "GetAllBlogger",
-    "RelativePath": "bloggers",
+    "RelativePath": "bloggers/all",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "GetBloggerId",
+    "RelativePath": "bloggers/byid",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   }
 ]

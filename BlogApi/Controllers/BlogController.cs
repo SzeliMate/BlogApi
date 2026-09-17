@@ -140,5 +140,42 @@ namespace BlogApi.Controllers
                 return new { message = "Sikertelen frissítés", result = updateBloggerDTos };
             }
         }
+
+        [HttpGet("count")]
+        public object GetBloggerCount()
+        {
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+            string sql = @"SELECT COUNT(*) FROM blogger";
+            using var cmd = new MySqlCommand(sql, connector);
+
+            int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return new { message = "Regisztrált tagok száma sikeresen lekérdezve", result = count };
+            }
+
+            [HttpGet("orderedlist")]
+            public object GetBloggersOrdered()
+            {
+                var orderedBloggers = new List<object>();
+                using var connector = new MySqlConnection(ConnectionString);
+                connector.Open();
+                string sql = @"SELECT Name, Email FROM blogger ORDER BY Name ASC";
+                using var cmd = new MySqlCommand(sql, connector);
+                using var datareader = cmd.ExecuteReader();
+
+                while (datareader.Read())
+                {
+                    orderedBloggers.Add(new
+                    {
+                        Name = datareader.GetString("Name"),
+                        Email = datareader.GetString("Email")
+                    });
+                }
+
+                return new { message = "Bloggerek listája ABC sorrendben", result = orderedBloggers };
+            }
+
     }
 }
+

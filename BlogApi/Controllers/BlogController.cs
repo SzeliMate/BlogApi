@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
+using BlogApi.Models.DTOs;
 
 namespace BlogApi.Controllers
 {
@@ -62,6 +63,17 @@ namespace BlogApi.Controllers
                 RegistrationTime = datareader.GetDateTime("RegistrationTime")
             };
             return new { message = "Sikeres találat", result = blogger };
+        }
+
+        [HttpPost]
+        public object AddNewBlogger(AddNewBloggerDTos blog)
+        {
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+
+
+            connector.Close();
+            return new { message = "Sikeres hozzáadás", result = blog };
         }
     }
 }

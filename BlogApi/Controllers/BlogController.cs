@@ -100,7 +100,45 @@ namespace BlogApi.Controllers
             {
                 return new { message = "Sikertelen belépés", result = loginBloggerDTos};
             }
+        }
 
+        [HttpDelete("delete")]
+        public object DeleteBlogger([FromBody] int id)
+        {
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+            string sql = @"DELETE FROM blogger WHERE Id=@id";
+            using var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@id", id);
+            if (cmd.ExecuteNonQuery() > 0)
+            {
+                return new { message = "Sikeres törlés", result = id };
+            }
+            else
+            {
+                return new { message = "Sikertelen törlés", result = id };
+            }
+        }
+        [HttpPut("update")]
+        public object UpdateBlogger([FromQuery] int id, [FromBody] UpdateBloggerDTOs updateBloggerDTos)
+        {
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+            string sql = @"UPDATE blogger SET Name=@name, Email=@email, Age=@age, Password=@password WHERE Id=@id";
+            using var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@name", updateBloggerDTos.Name);
+            cmd.Parameters.AddWithValue("@email", updateBloggerDTos.Email);
+            cmd.Parameters.AddWithValue("@age", updateBloggerDTos.Age);
+            cmd.Parameters.AddWithValue("@password", updateBloggerDTos.Password);
+            cmd.Parameters.AddWithValue("@id", updateBloggerDTos.Id);
+            if (cmd.ExecuteNonQuery() > 0)
+            {
+                return new { message = "Sikeres frissítés", result = updateBloggerDTos };
+            }
+            else
+            {
+                return new { message = "Sikertelen frissítés", result = updateBloggerDTos };
+            }
         }
     }
 }

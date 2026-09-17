@@ -27,6 +27,22 @@
   },
   {
     "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "DeleteBlogger",
+    "RelativePath": "bloggers/delete",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
     "Method": "Login",
     "RelativePath": "bloggers/login",
     "HttpMethod": "POST",
@@ -52,6 +68,27 @@
       {
         "Name": "addNewBloggerDTos",
         "Type": "BlogApi.Models.DTOs.AddNewBloggerDTos",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "UpdateBlogger",
+    "RelativePath": "bloggers/update",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "updateBloggerDTos",
+        "Type": "BlogApi.Models.DTOs.UpdateBloggerDTOs",
         "IsRequired": true
       }
     ],

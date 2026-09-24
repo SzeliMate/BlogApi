@@ -205,7 +205,44 @@ namespace BlogApi.Controllers
             }
             return new { message = "Sikeres lekérdezés", result = blogpostList };
         }
-
+        [HttpDelete("delete2")]
+        public object Deleteblogpost([FromBody] int id)
+        {
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+            string sql = @"DELETE FROM blogpost WHERE Id=@id";
+            using var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@id", id);
+            if (cmd.ExecuteNonQuery() > 0)
+            {
+                return new { message = "Sikeres törlés", result = id };
+            }
+            else
+            {
+                return new { message = "Sikertelen törlés", result = id };
+            }
+        }
+        [HttpPut("update2")]
+        public object Blogpostupdate([FromQuery] int id, [FromBody] Blogpostupdatecs blogpostupdatecs)
+        {
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+            string sql = @"UPDATE blogpost SET Title=@title, Content=@content, postTime=@postTime, updateTime=@updateTime, blogId=@blogid WHERE 1";
+            using var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@title", blogpostupdatecs.Title);
+            cmd.Parameters.AddWithValue("@content", blogpostupdatecs.Content);
+            cmd.Parameters.AddWithValue("@postTime", blogpostupdatecs.postTime);
+            cmd.Parameters.AddWithValue("@updateTime", blogpostupdatecs.updateTime);
+            cmd.Parameters.AddWithValue("@blogid", blogpostupdatecs.blogId);
+            if (cmd.ExecuteNonQuery() > 0)
+            {
+                return new { message = "Sikeres frissítés", result = blogpostupdatecs };
+            }
+            else
+            {
+                return new { message = "Sikertelen frissítés", result = blogpostupdatecs };
+            }
+        }
 
     }
 }

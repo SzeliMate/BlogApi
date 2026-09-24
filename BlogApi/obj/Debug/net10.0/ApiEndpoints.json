@@ -21,6 +21,22 @@
   },
   {
     "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "GetBlogpostCountByBlogger",
+    "RelativePath": "bloggers/blogpostcount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "bloggerId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
     "Method": "GetBloggerId",
     "RelativePath": "bloggers/byid",
     "HttpMethod": "GET",
@@ -39,6 +55,16 @@
     "ContainingType": "BlogApi.Controllers.BlogController",
     "Method": "GetBloggerCount",
     "RelativePath": "bloggers/count",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "countblogpost",
+    "RelativePath": "bloggers/countblogpost",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

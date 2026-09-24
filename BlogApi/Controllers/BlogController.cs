@@ -240,11 +240,11 @@ namespace BlogApi.Controllers
                 {
                     PostTime = reader.GetDateTime(0);
                 }
-                
+
                 reader.Close();
             }
 
-            
+
             if (PostTime == DateTime.MinValue)
             {
                 return new { message = "Sikertelen frissítés." };
@@ -283,6 +283,55 @@ namespace BlogApi.Controllers
                 return new { message = "Sikertelen frissítés" };
             }
         }
-    }
-    }
+        [HttpGet("countblogpost")]
+        public object countblogpost()
+        {
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+            string sql = @"SELECT COUNT(*) FROM blogpost";
+            using var cmd = new MySqlCommand(sql, connector);
 
+            int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+            return new { message = "Regisztrált blogpostok száma sikeresen lekérdezve", result = count };
+        }
+        [HttpGet("blogpostcount")]
+        public object GetBlogpostCountByBlogger(int bloggerId)
+        {
+            string sql = @"SELECT COUNT(*) FROM blogpost WHERE blogger_id = @bloggerId";
+[HttpGet("blogpostcount")]
+public object GetBlogpostCountByBlogger(int bloggerId)
+{
+    using var connector = new MySqlConnection(ConnectionString);
+    connector.Open();
+
+    string sql = @"SELECT COUNT(*) FROM blogpost WHERE blogger_id = @bloggerId";
+    using var cmd = new MySqlCommand(sql, connector);
+    cmd.Parameters.AddWithValue("@bloggerId", bloggerId);
+    int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+    return new
+    {
+        message = "Blogger bejegyzéseinek száma sikeresen lekérdezve",
+        result = new
+        {
+            BloggerId = bloggerId,
+            PostCount = count
+        }
+    };
+}
+            cmd.Parameters.AddWithValue("@bloggerId", bloggerId);
+            int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+            return new
+            {
+                message = "Blogger bejegyzéseinek száma sikeresen lekérdezve",
+                result = new
+                {
+                    BloggerId = bloggerId,
+                    PostCount = count
+                }
+            };
+        }
+    }
+}

@@ -231,6 +231,18 @@
           }
         }
       }
+    },
+    "/bloggers/AllBlogpost": {
+      "get": {
+        "tags": [
+          "Blog"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

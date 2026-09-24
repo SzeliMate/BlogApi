@@ -5,11 +5,13 @@ using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
 using BlogApi.Models.DTOs;
 using System.Diagnostics;
+using BlogApi.Models.Blogpost;
 
 namespace BlogApi.Controllers
 {
     [Route("bloggers")]
     [ApiController]
+
     public class BlogController : ControllerBase
     {
         private string ConnectionString = "Server=localhost;Database=Blog;uid=root;password=;";
@@ -98,7 +100,7 @@ namespace BlogApi.Controllers
             }
             else
             {
-                return new { message = "Sikertelen belépés", result = loginBloggerDTos};
+                return new { message = "Sikertelen belépés", result = loginBloggerDTos };
             }
         }
 
@@ -151,30 +153,59 @@ namespace BlogApi.Controllers
 
             int count = Convert.ToInt32(cmd.ExecuteScalar());
 
-                return new { message = "Regisztrált tagok száma sikeresen lekérdezve", result = count };
-            }
+            return new { message = "Regisztrált tagok száma sikeresen lekérdezve", result = count };
+        }
 
-            [HttpGet("orderedlist")]
-            public object GetBloggersOrdered()
+        [HttpGet("orderedlist")]
+        public object GetBloggersOrdered()
+        {
+            var orderedBloggers = new List<object>();
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+            string sql = @"SELECT Name, Email FROM blogger ORDER BY Name ASC";
+            using var cmd = new MySqlCommand(sql, connector);
+            using var datareader = cmd.ExecuteReader();
+
+            while (datareader.Read())
             {
-                var orderedBloggers = new List<object>();
-                using var connector = new MySqlConnection(ConnectionString);
-                connector.Open();
-                string sql = @"SELECT Name, Email FROM blogger ORDER BY Name ASC";
-                using var cmd = new MySqlCommand(sql, connector);
-                using var datareader = cmd.ExecuteReader();
-
-                while (datareader.Read())
+                orderedBloggers.Add(new
                 {
-                    orderedBloggers.Add(new
-                    {
-                        Name = datareader.GetString("Name"),
-                        Email = datareader.GetString("Email")
-                    });
-                }
-
-                return new { message = "Bloggerek listája ABC sorrendben", result = orderedBloggers };
+                    Name = datareader.GetString("Name"),
+                    Email = datareader.GetString("Email")
+                });
             }
+
+            return new { message = "Bloggerek listája ABC sorrendben", result = orderedBloggers };
+        }
+        [HttpGet("AllBlogpost")]
+        public object Blogpost()
+        {
+            List<Blogpost> blogpostList = new List<Blogpost>();
+
+            using var connector = new MySqlConnection(ConnectionString);
+            connector.Open();
+
+            string sql = @"SELECT * FROM blogpost";
+            using var cmd = new MySqlCommand(sql, connector);
+            using var datareader = cmd.ExecuteReader();
+
+            while (datareader.Read())
+            {
+                var post = new Blogpost
+                {
+                    Id = datareader.GetInt32(datareader.GetOrdinal("Id")),
+                    Title = datareader.GetString(datareader.GetOrdinal("Title")),
+                    Content = datareader.GetString(datareader.GetOrdinal("Content")),
+                    postTime = datareader.GetDateTime(datareader.GetOrdinal("postTime")),
+                    updateTime = datareader.GetDateTime(datareader.GetOrdinal("updateTime")),
+                    blogId = datareader.GetInt32(datareader.GetOrdinal("blogId"))
+                };
+
+                blogpostList.Add(post);
+            }
+            return new { message = "Sikeres lekérdezés", result = blogpostList };
+        }
+
 
     }
 }

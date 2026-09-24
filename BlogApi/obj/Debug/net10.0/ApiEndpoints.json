@@ -11,6 +11,16 @@
   },
   {
     "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "Blogpost",
+    "RelativePath": "bloggers/AllBlogpost",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
     "Method": "GetBloggerId",
     "RelativePath": "bloggers/byid",
     "HttpMethod": "GET",

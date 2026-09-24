@@ -181,7 +181,6 @@ namespace BlogApi.Controllers
         public object Blogpost()
         {
             List<Blogpost> blogpostList = new List<Blogpost>();
-
             using var connector = new MySqlConnection(ConnectionString);
             connector.Open();
 
@@ -200,19 +199,22 @@ namespace BlogApi.Controllers
                     updateTime = datareader.GetDateTime(datareader.GetOrdinal("updateTime")),
                     blogId = datareader.GetInt32(datareader.GetOrdinal("blogId"))
                 };
-
                 blogpostList.Add(post);
             }
+
             return new { message = "Sikeres lekérdezés", result = blogpostList };
         }
-        [HttpDelete("delete2")]
+
+        [HttpDelete("deleteblogpost")]
         public object Deleteblogpost([FromBody] int id)
         {
             using var connector = new MySqlConnection(ConnectionString);
             connector.Open();
+
             string sql = @"DELETE FROM blogpost WHERE Id=@id";
             using var cmd = new MySqlCommand(sql, connector);
             cmd.Parameters.AddWithValue("@id", id);
+
             if (cmd.ExecuteNonQuery() > 0)
             {
                 return new { message = "Sikeres törlés", result = id };
@@ -222,28 +224,65 @@ namespace BlogApi.Controllers
                 return new { message = "Sikertelen törlés", result = id };
             }
         }
-        [HttpPut("update2")]
-        public object Blogpostupdate([FromQuery] int id, [FromBody] Blogpostupdatecs blogpostupdatecs)
+
+        [HttpPut("updateblogpost")]
+        public object Blogpostupdate([FromBody] Blogpostupdatecs blogpostupdatecs)
         {
             using var connector = new MySqlConnection(ConnectionString);
             connector.Open();
-            string sql = @"UPDATE blogpost SET Title=@title, Content=@content, postTime=@postTime, updateTime=@updateTime, blogId=@blogid WHERE 1";
+            DateTime PostTime = DateTime.MinValue;
+            string selectSql = "SELECT postTime FROM blogpost WHERE Id = @id";
+            using (var selectCmd = new MySqlCommand(selectSql, connector))
+            {
+                selectCmd.Parameters.AddWithValue("@id", blogpostupdatecs.Id);
+                using var reader = selectCmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    PostTime = reader.GetDateTime(0);
+                }
+                
+                reader.Close();
+            }
+
+            
+            if (PostTime == DateTime.MinValue)
+            {
+                return new { message = "Sikertelen frissítés." };
+            }
+            string sql = @"UPDATE blogpost 
+                   SET Title=@title, Content=@content, updateTime=@updateTime, blogId=@blogid 
+                   WHERE Id=@id";
+
+            DateTime pontosIdo = DateTime.Now;
+
             using var cmd = new MySqlCommand(sql, connector);
+            cmd.Parameters.AddWithValue("@id", blogpostupdatecs.Id);
             cmd.Parameters.AddWithValue("@title", blogpostupdatecs.Title);
             cmd.Parameters.AddWithValue("@content", blogpostupdatecs.Content);
-            cmd.Parameters.AddWithValue("@postTime", blogpostupdatecs.postTime);
-            cmd.Parameters.AddWithValue("@updateTime", blogpostupdatecs.updateTime);
             cmd.Parameters.AddWithValue("@blogid", blogpostupdatecs.blogId);
+            cmd.Parameters.AddWithValue("@updateTime", pontosIdo);
+
             if (cmd.ExecuteNonQuery() > 0)
             {
-                return new { message = "Sikeres frissítés", result = blogpostupdatecs };
+                return new
+                {
+                    message = "Sikeres frissítés",
+                    result = new
+                    {
+                        Id = blogpostupdatecs.Id,
+                        Title = blogpostupdatecs.Title,
+                        Content = blogpostupdatecs.Content,
+                        blogId = blogpostupdatecs.blogId,
+                        postTime = PostTime,
+                        updateTime = pontosIdo
+                    }
+                };
             }
             else
             {
-                return new { message = "Sikertelen frissítés", result = blogpostupdatecs };
+                return new { message = "Sikertelen frissítés" };
             }
         }
-
     }
-}
+    }
 

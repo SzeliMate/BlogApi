@@ -244,7 +244,7 @@
         }
       }
     },
-    "/bloggers/delete2": {
+    "/bloggers/deleteblogpost": {
       "delete": {
         "tags": [
           "Blog"
@@ -291,24 +291,10 @@
         }
       }
     },
-    "/bloggers/update2": {
+    "/bloggers/updateblogpost": {
       "put": {
         "tags": [
           "Blog"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
-              "format": "int32"
-            }
-          }
         ],
         "requestBody": {
           "content": {
@@ -378,14 +364,6 @@
           },
           "content": {
             "type": "string"
-          },
-          "postTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updateTime": {
-            "type": "string",
-            "format": "date-time"
           },
           "blogId": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",

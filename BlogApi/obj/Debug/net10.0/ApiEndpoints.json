@@ -27,6 +27,16 @@
   },
   {
     "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "GetBloggerCount",
+    "RelativePath": "bloggers/count",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
     "Method": "DeleteBlogger",
     "RelativePath": "bloggers/delete",
     "HttpMethod": "DELETE",
@@ -55,6 +65,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApi.Controllers.BlogController",
+    "Method": "GetBloggersOrdered",
+    "RelativePath": "bloggers/orderedlist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
